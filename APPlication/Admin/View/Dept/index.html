@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="__ADMIN__css/base.css" />
+<link rel="stylesheet" href="__ADMIN__css/info-mgt.css" />
+<link rel="stylesheet" href="__ADMIN__css/WdatePicker.css" />
+<title>移动办公自动化系统</title>
+</head>
+
+<body>
+<div class="title"><h2>信息管理</h2></div>
+<div class="table-operate ue-clear">
+	<a href="javascript:;" class="add">添加</a>
+    <a id='delete' class="del">删除</a>
+    <a id='edit' class="edit">编辑</a>
+    <a href="javascript:;" class="count">统计</a>
+    <a href="javascript:;" class="check">审核</a>
+</div>
+<div class="table-box">
+	<table>
+    	<thead>
+        	<tr>
+            	<th class="num">序号</th>
+                <th class="name">部门名称</th>
+                <th class="process">备注信息</th>
+                <th class="operate">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        	<volist name='data' id='vo'>
+        	<tr>
+            	<td class="num">{$vo.id}</td>
+                <td class="name">{$vo.name}</td>
+                <td class="process">{$vo.remark}</td>
+                <td class="operate">
+                	<input type='checkbox' name='id[]' value='{$vo.id}'>
+                </td>
+            </tr>
+            </volist>
+        </tbody>
+    </table>
+</div>
+<div class="pagination ue-clear"></div>
+</body>
+<script type="text/javascript" src="__ADMIN__js/jquery.js"></script>
+<script type="text/javascript" src="__ADMIN__js/common.js"></script>
+<script type="text/javascript" src="__ADMIN__js/WdatePicker.js"></script>
+<script type="text/javascript" src="__ADMIN__js/jquery.pagination.js"></script>
+<script type="text/javascript">
+$(function(){
+	//修改元素
+	$('#edit').bind('click',function(){
+		var ck = $(':checkbox:checked');
+		if(!ck.length){
+			alert('你没有选中要修改的元素');
+			return;
+		}
+		if(ck.length == 1){
+			var id = ck.val();
+			location.href="{:U('Admin/Dept/edit/id/"+id+"')}";
+		}else{
+			alert('一次只能修改一个元素!');
+		}
+		
+	});
+	//删除元素
+	$('#delete').bind('click',function(){
+		if(confirm('你确定要删除')){
+			var ck = $(':checkbox:checked');
+			if(!ck.length){
+				alert('未选中要删除的元素');
+				return;
+			}
+			var id = [];
+			for(var i=0;i<ck.length;++i){
+				id.push(ck[i].value);
+			}
+			var id = id.toString();
+			location.href="{:U('Admin/Dept/del/id/"+id+"')}";
+		}
+	});
+});
+$(".select-title").on("click",function(){
+	$(".select-list").hide();
+	$(this).siblings($(".select-list")).show();
+	return false;
+})
+$(".select-list").on("click","li",function(){
+	var txt = $(this).text();
+	$(this).parent($(".select-list")).siblings($(".select-title")).find("span").text(txt);
+})
+
+$('.pagination').pagination(100,{
+	callback: function(page){
+		alert(page);	
+	},
+	display_msg: true,
+	setPageNo: true
+});
+
+$("tbody").find("tr:odd").css("backgroundColor","#eff6fa");
+
+showRemind('input[type=text], textarea','placeholder');
+</script>
+</html>

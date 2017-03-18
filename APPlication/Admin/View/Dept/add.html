@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="__ADMIN__css/base.css" />
+<link rel="stylesheet" href="__ADMIN__css/info-reg.css" />
+<title>移动办公自动化系统</title>
+</head>
+
+<body>
+<form action='__CONTROLLER__/addok' method='post'>
+<div class="title"><h2>信息登记</h2></div>
+<div class="main">
+    <p class="short-input ue-clear">
+    	<label>部门：</label>
+        <input type="text" placeholder="部门" name='dept_name'/>
+    </p>
+    <div class="short-input select ue-clear">
+    	<label>所属部门：</label>
+        <div class="select-wrap">
+            <select name='dept_pid'>
+            	<option value='0'>请选择</option>
+            	<volist name='data' id='vo'>
+            		<option value='{$vo.id}'>{$vo.name}</option>
+            	</volist>
+            </select>
+        </div>
+    </div>
+    <p class="short-input ue-clear">
+    	<label>归档时间：</label>
+        <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+    </p>
+    <p class="short-input ue-clear">
+    	<label>备注：</label>
+        <textarea placeholder="请输入内容" name='dept_remark'></textarea>
+    </p>
+</div>
+<div class="btn ue-clear">
+	<a id='confirms' class="confirm">确定</a>
+    <a id='clears' class="clear">清空内容</a>
+</div>
+</form>
+</body>
+<script type="text/javascript" src="__ADMIN__js/jquery.js"></script>
+<script type="text/javascript" src="__ADMIN__js/common.js"></script>
+<script type="text/javascript" src="__ADMIN__js/WdatePicker.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#confirms').bind('click',function(){
+		//提交表单
+		$('form').submit();
+	});
+	$('#clears').bind('click',function(){
+		//重置表单
+		$('form')[0].reset();
+	});
+});
+$(".select-title").on("click",function(){
+	$(".select-list").toggle();
+	return false;
+});
+$(".select-list").on("click","li",function(){
+	var txt = $(this).text();
+	$(".select-title").find("span").text(txt);
+});
+
+
+showRemind('input[type=text], textarea','placeholder');
+</script>
+</html>
